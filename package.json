@@ -1,12 +1,21 @@
 {
   "name": "gtav-live-map-client",
   "version": "1.0.0",
-  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "build-watch": "tsc -w",
+    "format": "prettier --write \"src/**/*.ts\""
   },
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
-  "description": ""
+  "author": "IronPython",
+  "devDependencies": {
+    "@types/node": "^16.10.5",
+    "prettier": "^2.4.1",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "@microsoft/signalr": "^5.0.11"
+  }
 }
