@@ -1,6 +1,9 @@
 {
   "name": "gtav-live-map-client",
   "version": "1.0.0",
+  "description": "Client for working with gtavlivemap.org",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "build-watch": "tsc -w",
@@ -15,6 +18,11 @@
   "files": [
     "dist/**/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimonMillerIO/gtav-live-map-client.git"
+  },
+  "keywords": ["GTAV-Live-Map-Client" , "GTAVLiveMapClient" , "gtavlivemapclient" , "gtav-live-map-client"],
   "dependencies": {
     "@microsoft/signalr": "^5.0.11"
   }
