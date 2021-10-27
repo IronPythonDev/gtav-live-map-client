@@ -11,7 +11,7 @@
   },
   "author": "IronPython",
   "devDependencies": {
-    "@types/node": "^16.10.5",
+    "@types/node": "^16.11.6",
     "prettier": "^2.4.1",
     "tslint-config-prettier": "^1.18.0"
   },
@@ -22,7 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/SimonMillerIO/gtav-live-map-client.git"
   },
-  "keywords": ["GTAV-Live-Map-Client" , "GTAVLiveMapClient" , "gtavlivemapclient" , "gtav-live-map-client"],
+  "keywords": [
+    "GTAV-Live-Map-Client",
+    "GTAVLiveMapClient",
+    "gtavlivemapclient",
+    "gtav-live-map-client"
+  ],
   "dependencies": {
     "@microsoft/signalr": "^5.0.11"
   }
