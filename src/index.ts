@@ -61,7 +61,7 @@ export class GTAVLiveMapClient {
         this.emitServer('UpdateObject', obj);
     }
 
-    private emitServer(methodName: string, ...args: any[]) {
+    emitServer(methodName: string, ...args: any[]) {
         if (this.connection === null) throw 'Connection is null';
         
         this.connection?.send(methodName, args);
