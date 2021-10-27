@@ -9,8 +9,8 @@ export class ConnectionOptions {
 }
 
 export class GTAVLiveMapClient {
-    private connectionOptions: ConnectionOptions;
-    private connection: HubConnection | null;
+    public connectionOptions: ConnectionOptions;
+    public connection: HubConnection | null;
 
     constructor(options: ConnectionOptions) {
         if (options === null) throw 'options is null';
@@ -64,6 +64,6 @@ export class GTAVLiveMapClient {
     emitServer(methodName: string, ...args: any[]) {
         if (this.connection === null) throw 'Connection is null';
         
-        this.connection?.send(methodName, args);
+        this.connection?.invoke(methodName, args);
     }
 }
