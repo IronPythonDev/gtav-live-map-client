@@ -5,7 +5,7 @@ export class ConnectionOptions {
     port: number = 80;
     url: string | null = null;
     endpoint: string | null = '/ws/map';
-    apiKey: string | null = '';
+    apiKey: string = '';
 }
 
 export class GTAVLiveMapClient {
@@ -23,13 +23,10 @@ export class GTAVLiveMapClient {
         const url = this.connectionOptions.url ?? `${this.connectionOptions.host}:${this.connectionOptions.port}`;
 
         this.connection = new HubConnectionBuilder()
-            .withUrl(url + this.connectionOptions.endpoint, {
+            .withUrl(url + this.connectionOptions.endpoint + `?apiKey=${this.connectionOptions.apiKey}`, {
                 withCredentials: false,
                 skipNegotiation: true,
-                transport: HttpTransportType.WebSockets,
-                headers: {
-                    'ApiKey': this.connectionOptions.apiKey === null ? '' : this.connectionOptions.apiKey
-                }
+                transport: HttpTransportType.WebSockets
             })
             .build();
 
