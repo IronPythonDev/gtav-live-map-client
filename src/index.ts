@@ -4,7 +4,7 @@ import axios from 'axios';
 export class ConnectionOptions {
     host: string = 'http://localhost';
     port: number = 80;
-    url: string | null = null;
+    url: string | null = 'http://api.gtavlivemap.com';
     endpoint: string | null = '/ws/map';
     apiKey: string = '';
     apiVersion: string = 'v1';

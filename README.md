@@ -1,25 +1,41 @@
 #### Examples
 
 ```ts
+import { ConnectionOptions, GTAVLiveMapClient } from '../dist/index.js';
+
 let options = new ConnectionOptions();
 
-options.port = 49154;
+options.url = 'http://localhost:8090';
+options.apiKey = 'vlgRbFEWdkSv98hDRqxlCdKKKxJoRL';
 
 let client = new GTAVLiveMapClient(options)
-    .build()
-    .registerAction('OnUpdateMarker', (position: {x: number , y: number , z: number}) => {
-        console.log(`ObjectPosition => ${position.x}:${position.y}:${position.z}`);
-    })
-    .registerAction('KickPlayer', (playerId: number) => {
-        console.log(`Kik => ${playerId}`);
-    });
-
-client
-    .connectToServer()
-    .then((v) => {
-        console.log(`Successfully connected`);
-    })
-    .catch((r) => {
-        console.log(`Failed connected => Reason: ${r}`);
-    });
+  .build()
+  .registerAutoReconnect(2000, () => {
+    console.log('Connection restored successfully');
+  })
+  .registerOnConnected(() => {
+    console.log('Successfully connected to map');
+  })
+  .registerOnFailedConnect((r, i) => {
+    console.log('Failed');
+  })
+  .connectToServerWithWaitConnection(2000)
+  .registerGlobalAction(
+    'CustomAction',
+    (args) => {
+      console.log('Hello World');
+    },
+    (e) => {
+      console.log(`Error: ` + e.response.data);
+    },
+  )
+  .registerGlobalAction(
+    'CustomAction1',
+    (args) => {
+      console.log('Hello World');
+    },
+    (e) => {
+      console.log(`Error: ` + e.response.data);
+    },
+  );
 ```
