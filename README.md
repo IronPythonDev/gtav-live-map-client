@@ -29,13 +29,7 @@ let client = new GTAVLiveMapClient(options)
       console.log(`Error: ` + e.response.data);
     },
   )
-  .registerGlobalAction(
-    'CustomAction1',
-    (args) => {
-      console.log('Hello World');
-    },
-    (e) => {
-      console.log(`Error: ` + e.response.data);
-    },
-  );
+  .registerLocalAction('OnConnected', () => {
+    console.log('OnConnected');
+  });
 ```
