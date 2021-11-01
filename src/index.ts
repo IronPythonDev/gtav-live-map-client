@@ -40,6 +40,7 @@ export class GTAVLiveMapClient {
     public httpClient: GTAVLiveMapHTTPClient;
 
     private onSuccessfullyConnected: () => void = () => { };
+    private onDisconnected: (e: any) => void = () => { };
     private onFailedConnect: (r: any, interval: NodeJS.Timer) => void = (r, i) => { };
 
     constructor(options: ConnectionOptions) {
@@ -68,6 +69,8 @@ export class GTAVLiveMapClient {
         if (this.connection === null) throw 'Connection is null';
 
         this.connection.onclose((e) => {
+            this.onDisconnected(e);
+
             const reconnectInterval = setInterval(() => {
                 this.connectToServer().then(v => {
                     clearInterval(reconnectInterval);
@@ -84,6 +87,12 @@ export class GTAVLiveMapClient {
 
         this.registerLocalAction('OnConnected', callback);
         this.onSuccessfullyConnected = callback;
+
+        return this;
+    }
+
+    registerOnDisconnected(callback: (e: any) => void){
+        this.onDisconnected = callback;
 
         return this;
     }
@@ -119,6 +128,8 @@ export class GTAVLiveMapClient {
         if (this.connection === null) throw 'Connection is null';
 
         this.connection.on(name, handler);
+
+        return this;
     }
 
     registerGlobalAction(name: string, handler: (...args: any[]) => void , onFailed: (e: any) => void = (e) => {}): GTAVLiveMapClient {
