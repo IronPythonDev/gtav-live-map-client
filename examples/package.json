@@ -1,0 +1,13 @@
+{
+  "name": "gtav-live-map-client-example",
+  "description": "Examples",
+  "main": "./index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "IronPython",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}

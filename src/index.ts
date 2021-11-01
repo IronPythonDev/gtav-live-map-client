@@ -1,4 +1,5 @@
 import { HubConnectionBuilder, HttpTransportType, HubConnection } from '@microsoft/signalr';
+import axios from 'axios';
 
 export class ConnectionOptions {
     host: string = 'http://localhost';
@@ -6,17 +7,47 @@ export class ConnectionOptions {
     url: string | null = null;
     endpoint: string | null = '/ws/map';
     apiKey: string = '';
+    apiVersion: string = 'v1';
+}
+
+class GTAVLiveMapHTTPClient {
+    public connectionOptions: ConnectionOptions;
+
+    private url: string;
+
+    constructor(options: ConnectionOptions) {
+        this.connectionOptions = options;
+
+        this.url = this.connectionOptions.url ?? `${this.connectionOptions.host}:${this.connectionOptions.port}`;
+    }
+
+    createAction(name: string, description: string = '' , src: string = '') {
+        return axios.post(this.url + `/${this.connectionOptions.apiVersion}/maps/apiKey/actions`, {
+            "Name": name,
+            "Description": description,
+            "Source": src
+        }, {
+            headers: {
+                'ApiKey': this.connectionOptions.apiKey
+            }
+        });
+    }
 }
 
 export class GTAVLiveMapClient {
     public connectionOptions: ConnectionOptions;
     public connection: HubConnection | null;
+    public httpClient: GTAVLiveMapHTTPClient;
+
+    private onSuccessfullyConnected: () => void = () => { };
+    private onFailedConnect: (r: any, interval: NodeJS.Timer) => void = (r, i) => { };
 
     constructor(options: ConnectionOptions) {
         if (options === null) throw 'options is null';
 
         this.connectionOptions = options;
         this.connection = null;
+        this.httpClient = new GTAVLiveMapHTTPClient(options);
     }
 
     build(): GTAVLiveMapClient {
@@ -33,37 +64,84 @@ export class GTAVLiveMapClient {
         return this;
     }
 
+    registerAutoReconnect(interval: number = 1000, onSuccess: () => void = () => { }, onFailed: (r: any, interval: NodeJS.Timer) => void = () => { }) {
+        if (this.connection === null) throw 'Connection is null';
+
+        this.connection.onclose((e) => {
+            const reconnectInterval = setInterval(() => {
+                this.connectToServer().then(v => {
+                    clearInterval(reconnectInterval);
+                    onSuccess();
+                }).catch(e => onFailed(e, reconnectInterval));
+            }, interval)
+        })
+
+        return this;
+    }
+
+    registerOnConnected(callback: () => void) {
+        if (this.connection === null) throw 'Connection is null';
+
+        this.registerLocalAction('OnConnected', callback);
+        this.onSuccessfullyConnected = callback;
+
+        return this;
+    }
+
+    registerOnFailedConnect(callback: (r: any, interval: NodeJS.Timer) => void) {
+        if (this.connection === null) throw 'Connection is null';
+
+        this.onFailedConnect = callback;
+
+        return this;
+    }
+
+    connectToServerWithWaitConnection(interval: number = 1000) {
+        const connectInterval = setInterval(() => {
+            this.connectToServer()
+                .then(() => {
+                    this.onSuccessfullyConnected();
+                    clearInterval(connectInterval)
+                })
+                .catch((r) => this.onFailedConnect(r, connectInterval))
+        }, interval)
+
+        return this;
+    }
+
     connectToServer(): Promise<void> {
         if (this.connection === null) throw 'Connection is null';
 
         return this.connection.start();
     }
 
-    registerAction(name: string, handler: (...args: any[]) => void): GTAVLiveMapClient {
+    registerLocalAction(name: string, handler: (...args: any[]) => void){
         if (this.connection === null) throw 'Connection is null';
 
-        //add this action to DB
-
         this.connection.on(name, handler);
+    }
+
+    registerGlobalAction(name: string, handler: (...args: any[]) => void , onFailed: (e: any) => void = (e) => {}): GTAVLiveMapClient {
+        if (this.connection === null) throw 'Connection is null';
+
+        this.httpClient.createAction(name, '' , handler.toString()).then(v => {
+            if (this.connection === null) return;
+
+            this.connection.on(name, handler);
+        }).catch(e => onFailed(e));
 
         return this;
     }
 
-    sendObjectCord(obj: any, pos: { x: number, y: number, z: number }): void {
+    invoke(methodName: string, ...args: any[]) {
         if (this.connection === null) throw 'Connection is null';
 
-        this.emitServer('UpdateObjectPosition', obj, pos);
+        return this.connection?.invoke(methodName, args);
     }
 
-    sendObject(obj: any): void {
+    send(methodName: string, ...args: any[]) {
         if (this.connection === null) throw 'Connection is null';
 
-        this.emitServer('UpdateObject', obj);
-    }
-
-    emitServer(methodName: string, ...args: any[]) {
-        if (this.connection === null) throw 'Connection is null';
-        
-        this.connection?.invoke(methodName, args);
+        return this.connection?.send(methodName, args);
     }
 }
