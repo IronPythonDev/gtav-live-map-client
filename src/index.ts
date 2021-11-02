@@ -1,4 +1,4 @@
-import { HubConnectionBuilder, HttpTransportType, HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder, HttpTransportType, HubConnection, HubConnectionState } from '@microsoft/signalr';
 import axios from 'axios';
 
 export class ConnectionOptions {
@@ -107,6 +107,8 @@ export class GTAVLiveMapClient {
 
     connectToServerWithWaitConnection(interval: number = 1000) {
         const connectInterval = setInterval(() => {
+            if (this.connection?.state === HubConnectionState.Connecting) return;
+
             this.connectToServer()
                 .then(() => {
                     this.onSuccessfullyConnected();
