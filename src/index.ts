@@ -2,9 +2,7 @@ import { HubConnectionBuilder, HttpTransportType, HubConnection, HubConnectionSt
 import axios from 'axios';
 
 export class ConnectionOptions {
-    host: string = 'https://api.gtavlivemap.com';
-    port: number = 443;
-    url: string | null = 'https://api.gtavlivemap.com';
+    url: string = 'https://api.gtavlivemap.com';
     endpoint: string | null = '/ws/map';
     apiKey: string = '';
     apiVersion: string = 'v1';
@@ -18,7 +16,7 @@ class GTAVLiveMapHTTPClient {
     constructor(options: ConnectionOptions) {
         this.connectionOptions = options;
 
-        this.url = this.connectionOptions.url ?? `${this.connectionOptions.host}:${this.connectionOptions.port}`;
+        this.url = this.connectionOptions.url;
     }
 
     createAction(name: string, description: string = '' , src: string = '') {
@@ -52,7 +50,7 @@ export class GTAVLiveMapClient {
     }
 
     build(): GTAVLiveMapClient {
-        const url = this.connectionOptions.url ?? `${this.connectionOptions.host}:${this.connectionOptions.port}`;
+        const url = this.connectionOptions.url;
 
         this.connection = new HubConnectionBuilder()
             .withUrl(url + this.connectionOptions.endpoint + `?apiKey=${this.connectionOptions.apiKey}`, {
