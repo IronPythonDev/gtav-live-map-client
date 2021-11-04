@@ -3,10 +3,9 @@
 ```ts
 import { ConnectionOptions, GTAVLiveMapClient } from '../dist/index.js';
 
-let options = new ConnectionOptions();
+let options = new ConnectionOptions()
 
-options.url = 'http://localhost:8090';
-options.apiKey = 'vlgRbFEWdkSv98hDRqxlCdKKKxJoRL';
+options.apiKey = 'apiKey';
 
 let client = new GTAVLiveMapClient(options)
   .build()
