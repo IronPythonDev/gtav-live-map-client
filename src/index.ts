@@ -2,9 +2,9 @@ import { HubConnectionBuilder, HttpTransportType, HubConnection, HubConnectionSt
 import axios from 'axios';
 
 export class ConnectionOptions {
-    host: string = 'http://localhost';
-    port: number = 80;
-    url: string | null = 'http://api.gtavlivemap.com';
+    host: string = 'https://api.gtavlivemap.com';
+    port: number = 443;
+    url: string | null = 'https://api.gtavlivemap.com';
     endpoint: string | null = '/ws/map';
     apiKey: string = '';
     apiVersion: string = 'v1';
