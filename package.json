@@ -1,7 +1,7 @@
 {
   "name": "gtav-live-map-client",
-  "version": "2.7.0",
-  "description": "Client for working with gtavlivemap.org",
+  "version": "1.0.0",
+  "description": "Client for working with api.gtavlivemap.com",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
