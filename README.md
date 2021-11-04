@@ -1,8 +1,6 @@
 #### Examples
 
 ```ts
-import { ConnectionOptions, GTAVLiveMapClient } from '../dist/index.js';
-
 let options = new ConnectionOptions()
 
 options.apiKey = 'apiKey';
