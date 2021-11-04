@@ -1,5 +1,5 @@
 {
-  "name": "gtav-live-map-client",
+  "name": "gtav-live-map-ws-client",
   "version": "1.0.0",
   "description": "Client for working with api.gtavlivemap.com",
   "main": "dist/index.js",
