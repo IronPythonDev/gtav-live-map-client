@@ -32,7 +32,5 @@ let client = new GTAVLiveMapClient(options)
   .connectToServerWithWaitConnection(2000)
   //[OPTIONAL] Create action which triggered from API . In args, you need to pass name of action , callback and handler for failed create action
   .registerGlobalAction('name' , (args) => {} , (err) => {})
-  //[OPTIONAL] Create action which don't triggered from API
-  .registerLocalAction('name' , () => {});
 ```
 
