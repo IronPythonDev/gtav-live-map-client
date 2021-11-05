@@ -135,12 +135,12 @@ export class GTAVLiveMapClient {
     registerGlobalAction(name: string, handler: (...args: any[]) => void , onFailed: (e: any) => void = (e) => {}): GTAVLiveMapClient {
         if (this.connection === null) throw 'Connection is null';
 
+	this.connection.on(name, handler);
+
         this.httpClient.createAction(name, '' , handler.toString()).then(v => {
-            if (this.connection === null) return;
-
-            this.connection.on(name, handler);
+ 
         }).catch(e => onFailed(e));
-
+ 
         return this;
     }
 
