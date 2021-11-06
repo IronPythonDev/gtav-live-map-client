@@ -31,6 +31,15 @@ let client = new GTAVLiveMapClient(options)
   //Start connection to server, which will try to connect to server if connection failed. 
   .connectToServerWithWaitConnection(2000)
   //[OPTIONAL] Create action which triggered from API . In args, you need to pass name of action , callback and handler for failed create action
-  .registerGlobalAction('name' , (args) => {} , (err) => {})
+  .registerGlobalAction('name' , (args) => {} , (err) => {});
+  
+const body = {
+  Vector2: player.pos,//GTAV coordinates
+  CustomId: `player=${player.id}`,//The id by which we identify the object on the map must be unique to your card 
+  Icon: "ped",//There are three standard token icons that are ped, home and car
+  MetaData: {},//Metadata that doesn't affect anything, but you can use it for your own purposes
+};
+
+client.connection.send("CreateOrUpdateObject", body);
 ```
 
