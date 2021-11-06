@@ -34,12 +34,16 @@ let client = new GTAVLiveMapClient(options)
   .registerGlobalAction('name' , (args) => {} , (err) => {});
   
 const body = {
-  Vector2: player.pos,//GTAV coordinates
-  CustomId: `player=${player.id}`,//The id by which we identify the object on the map must be unique to your card 
+  Vector2: {x: 0 , y: 0 , z: 0},//GTAV coordinates
+  CustomId: `customId`,//The id by which we identify the object on the map must be unique to your card 
   Icon: "ped",//There are three standard token icons that are ped, home and car
   MetaData: {},//Metadata that doesn't affect anything, but you can use it for your own purposes
 };
 
+//Send this method for create or update object on map
 client.connection.send("CreateOrUpdateObject", body);
+
+//Send this method for delete object from map 
+client.connection.send("DeleteObject", `customId`);
 ```
 
