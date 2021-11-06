@@ -35,7 +35,7 @@ let client = new GTAVLiveMapClient(options)
   
 const body = {
   Vector2: {x: 0 , y: 0 , z: 0},//GTAV coordinates
-  CustomId: `customId`,//The id by which we identify the object on the map must be unique to your card 
+  CustomId: `customId`,//The id by which we identify the object on the map must be unique to your map 
   Icon: "ped",//There are three standard token icons that are ped, home and car
   MetaData: {},//Metadata that doesn't affect anything, but you can use it for your own purposes
 };
